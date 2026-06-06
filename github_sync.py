@@ -7,6 +7,27 @@ import requests
 import database
 
 SYNC_INFO_PATH = os.path.join("data", "sync_info.json")
+CONFIG_PATH = os.path.join("data", "config.json")
+DEFAULT_REPO = "ZahinDaiyan/neetcode-submissions"
+
+def load_config():
+    """Loads GitHub repository configuration."""
+    if os.path.exists(CONFIG_PATH):
+        try:
+            with open(CONFIG_PATH, "r") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"github_repo": DEFAULT_REPO, "github_token": ""}
+
+def save_config(github_repo, github_token):
+    """Saves GitHub repository configuration."""
+    os.makedirs(os.path.dirname(CONFIG_PATH), exist_ok=True)
+    with open(CONFIG_PATH, "w") as f:
+        json.dump({
+            "github_repo": github_repo.strip(),
+            "github_token": github_token.strip()
+        }, f)
 
 def get_last_sync_time():
     """Retrieves the last sync time from metadata file."""
@@ -29,15 +50,22 @@ def update_last_sync_time():
 
 def fetch_problems_from_github():
     """
-    Scans the ZahinDaiyan/neetcode-submissions repository.
+    Scans the configured GitHub repository.
     Returns a list of dicts: [{'name': 'Two Integer Sum', 'github_url': '...'}]
     """
-    repo_owner = "ZahinDaiyan"
-    repo_name = "neetcode-submissions"
+    config = load_config()
+    repo_path = config.get("github_repo", DEFAULT_REPO).strip()
     
+    # Split repo path into owner and name
+    if "/" in repo_path:
+        repo_owner, repo_name = repo_path.split("/", 1)
+    else:
+        repo_owner = "ZahinDaiyan"
+        repo_name = "neetcode-submissions"
+        
     headers = {}
-    # Use GITHUB_TOKEN environment variable if available to avoid rate limits
-    token = os.environ.get("GITHUB_TOKEN")
+    # Use config token, fallback to environment variable
+    token = config.get("github_token") or os.environ.get("GITHUB_TOKEN")
     if token:
         headers["Authorization"] = f"token {token}"
         

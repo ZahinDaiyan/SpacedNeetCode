@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpacedNeetCode - Settings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1><a href="/">Spaced<span>NeetCode</span></a></h1>
+            <div>
+                <a href="/" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </header>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert-message">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Settings Card -->
+        <div class="review-card" style="max-width: 500px;">
+            <h2 style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                GitHub Sync Configuration
+            </h2>
+            
+            <form action="/settings" method="POST" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div class="form-group" style="min-width: 100%;">
+                    <label for="github_repo" style="margin-bottom: 0.25rem;">GitHub Repository</label>
+                    <input type="text" id="github_repo" name="github_repo" class="form-control" 
+                           value="{{ config.github_repo }}" placeholder="owner/repo (e.g. ZahinDaiyan/neetcode-submissions)" required>
+                    <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">
+                        Enter the repository slug (format: owner/repo) containing your NeetCode submissions.
+                    </small>
+                </div>
+                
+                <div class="form-group" style="min-width: 100%;">
+                    <label for="github_token" style="margin-bottom: 0.25rem;">GitHub Token (Optional)</label>
+                    <input type="password" id="github_token" name="github_token" class="form-control" 
+                           value="{{ config.github_token or '' }}" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                    <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">
+                        Required if syncing from a **private repository**, or to increase GitHub API rate limits for public repos.
+                    </small>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">Save Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

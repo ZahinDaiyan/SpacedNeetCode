@@ -130,5 +130,19 @@ def add_problem():
         
     return redirect(url_for("index"))
 
+@app.route("/settings", methods=["GET", "POST"])
+def settings():
+    if request.method == "POST":
+        github_repo = request.form.get("github_repo", "").strip()
+        github_token = request.form.get("github_token", "").strip()
+        
+        # Save to config.json
+        github_sync.save_config(github_repo, github_token)
+        flash("Settings saved successfully!")
+        return redirect(url_for("index"))
+        
+    config = github_sync.load_config()
+    return render_template("settings.html", config=config)
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
