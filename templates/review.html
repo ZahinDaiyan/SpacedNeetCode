@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review: {{ problem.name }} - SpacedNeetCode</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1><a href="/">Spaced<span>NeetCode</span></a></h1>
+            <div>
+                <a href="/" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </header>
+
+        <!-- Review Card -->
+        <div class="review-card">
+            <h2>{{ problem.name }}</h2>
+            
+            <div class="review-meta">
+                <div class="meta-row">
+                    <span class="meta-label">GitHub Folder:</span>
+                    <span class="meta-value">
+                        <a href="{{ problem.github_url }}" target="_blank" class="table-link">Open Submission Folder</a>
+                    </span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Confidence Score:</span>
+                    <span class="meta-value">
+                        {% if problem.confidence_score >= 80 %}
+                            <span class="badge badge-green">{{ problem.confidence_score }}%</span>
+                        {% elif problem.confidence_score >= 40 %}
+                            <span class="badge badge-yellow">{{ problem.confidence_score }}%</span>
+                        {% else %}
+                            <span class="badge badge-red">{{ problem.confidence_score }}%</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Review Count:</span>
+                    <span class="meta-value">{{ problem.review_count }}</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Last Reviewed:</span>
+                    <span class="meta-value">{{ problem.last_review_date or 'Never' }}</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Next Review Scheduled:</span>
+                    <span class="meta-value">{{ problem.next_review_date }}</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Current Interval:</span>
+                    <span class="meta-value">{{ problem.interval_days }} day(s)</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Ease Factor:</span>
+                    <span class="meta-value">{{ problem.ease_factor }}</span>
+                </div>
+            </div>
+
+            <div class="review-instructions">
+                <p><strong>Instructions:</strong> Open the GitHub repository folder or find the problem on LeetCode. Attempt the problem independently. Once you are done, evaluate your attempt and choose a difficulty rating below to schedule the next review.</p>
+            </div>
+
+            <!-- Action Form -->
+            <form action="/review/{{ problem.id }}/submit" method="POST">
+                <div class="review-actions">
+                    <button type="submit" name="rating" value="easy" class="btn btn-easy">Easy</button>
+                    <button type="submit" name="rating" value="medium" class="btn btn-medium">Medium</button>
+                    <button type="submit" name="rating" value="hard" class="btn btn-hard">Hard</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

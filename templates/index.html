@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpacedNeetCode - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1><a href="/">Spaced<span>NeetCode</span></a></h1>
+            <div>
+                <form action="/sync" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-primary">Sync Repository</button>
+                </form>
+            </div>
+        </header>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert-message">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Problems</div>
+                <div id="stat-total" class="stat-val">{{ stats.total_problems }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Due Today</div>
+                <div id="stat-due" class="stat-val">{{ stats.due_today }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Confidence</div>
+                <div id="stat-confidence" class="stat-val">{{ stats.avg_confidence }}%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Last Sync</div>
+                <div id="stat-last-sync" class="stat-val" style="font-size: 1.1rem; padding-top: 0.75rem;">
+                    {{ stats.last_sync_time or 'Never' }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Entry Form -->
+        <div class="form-section">
+            <div class="form-title">Add Problem Manually</div>
+            <form action="/add" method="POST" class="form-inline">
+                <div class="form-group">
+                    <label for="problem_name">Problem Name</label>
+                    <input type="text" id="problem_name" name="name" class="form-control" placeholder="e.g. Two Sum" required>
+                </div>
+                <div class="form-group">
+                    <label for="problem_url">GitHub URL</label>
+                    <input type="url" id="problem_url" name="github_url" class="form-control" placeholder="https://github.com/..." required>
+                </div>
+                <button type="submit" class="btn btn-secondary">Add Problem</button>
+            </form>
+        </div>
+
+        <!-- Due Today Section -->
+        <section>
+            <h2>Due Today <span class="badge badge-red" id="due-count-badge">{{ due_problems|length }}</span></h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Problem</th>
+                            <th>Confidence</th>
+                            <th>Days Since Last Review</th>
+                            <th>Next Review</th>
+                            <th>Review Count</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="due-problems-list">
+                        {% for problem in due_problems %}
+                        <tr>
+                            <td>
+                                <strong>{{ problem.name }}</strong><br>
+                                <a href="{{ problem.github_url }}" target="_blank" class="table-link">GitHub Folder</a>
+                            </td>
+                            <td>
+                                {% if problem.confidence_score >= 80 %}
+                                    <span class="badge badge-green">{{ problem.confidence_score }}%</span>
+                                {% elif problem.confidence_score >= 40 %}
+                                    <span class="badge badge-yellow">{{ problem.confidence_score }}%</span>
+                                {% else %}
+                                    <span class="badge badge-red">{{ problem.confidence_score }}%</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ problem.days_since_last_review }}</td>
+                            <td>{{ problem.next_review_date }}</td>
+                            <td>{{ problem.review_count }}</td>
+                            <td>
+                                <a href="/review/{{ problem.id }}" class="btn btn-primary" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">Review</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                                No reviews due today. Excellent job!
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- All Problems Section -->
+        <section>
+            <h2>All Problems <span class="badge badge-blue">{{ all_problems|length }}</span></h2>
+            
+            <!-- Search Container -->
+            <div class="search-container">
+                <input type="text" id="search-box" class="form-control search-input" placeholder="Search problems...">
+            </div>
+
+            <div class="table-responsive">
+                <table id="all-problems-table">
+                    <thead>
+                        <tr>
+                            <th style="cursor: pointer;">Problem</th>
+                            <th style="cursor: pointer;">Confidence</th>
+                            <th style="cursor: pointer;">Review Count</th>
+                            <th style="cursor: pointer;">Last Review</th>
+                            <th style="cursor: pointer;">Next Review</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for problem in all_problems %}
+                        <tr class="problem-row">
+                            <td class="problem-name">
+                                <strong>{{ problem.name }}</strong><br>
+                                <a href="{{ problem.github_url }}" target="_blank" class="table-link">GitHub Folder</a>
+                            </td>
+                            <td>
+                                {% if problem.confidence_score >= 80 %}
+                                    <span class="badge badge-green">{{ problem.confidence_score }}%</span>
+                                {% elif problem.confidence_score >= 40 %}
+                                    <span class="badge badge-yellow">{{ problem.confidence_score }}%</span>
+                                {% else %}
+                                    <span class="badge badge-red">{{ problem.confidence_score }}%</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ problem.review_count }}</td>
+                            <td>{{ problem.last_review_date or 'Never' }}</td>
+                            <td>{{ problem.next_review_date }}</td>
+                            <td>
+                                <a href="/review/{{ problem.id }}" class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.8rem;">Review Details</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                                No problems found. Sync with GitHub or add one manually!
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        // Basic frontend search functionality
+        document.getElementById('search-box').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.problem-row');
+            
+            rows.forEach(row => {
+                const nameText = row.querySelector('.problem-name strong').textContent.toLowerCase();
+                if (nameText.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
