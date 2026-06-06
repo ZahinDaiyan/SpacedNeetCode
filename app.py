@@ -1,6 +1,8 @@
 # app.py
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
+import webbrowser
+from threading import Timer
 from flask import Flask, render_template, request, redirect, url_for, flash
 import database
 import github_sync
@@ -144,5 +146,36 @@ def settings():
     config = github_sync.load_config()
     return render_template("settings.html", config=config)
 
+@app.route("/review/<int:problem_id>/reset", methods=["POST"])
+def reset_problem(problem_id):
+    problem = database.get_problem(problem_id)
+    if not problem:
+        flash("Problem not found!")
+        return redirect(url_for("index"))
+        
+    # Reset problem to default spacing values
+    tomorrow_str = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+    database.update_problem(
+        problem_id=problem_id,
+        last_review_date=None,
+        next_review_date=tomorrow_str,
+        review_count=0,
+        interval_days=1,
+        ease_factor=2.5,
+        confidence_score=0
+    )
+    flash(f"Review progress for '{problem['name']}' has been reset.")
+    return redirect(url_for("review", problem_id=problem_id))
+
+@app.route("/settings/reset_all", methods=["POST"])
+def reset_all():
+    database.reset_all_problems()
+    flash("Review progress for ALL problems has been reset.")
+    return redirect(url_for("index"))
+
 if __name__ == "__main__":
+    # Auto-open browser on launch (checks WERKZEUG_RUN_MAIN to run only once in debug mode)
+    if not os.environ.get("WERKZEUG_RUN_MAIN"):
+        Timer(1.0, lambda: webbrowser.open("http://127.0.0.1:5000")).start()
+        
     app.run(debug=True, port=5000)

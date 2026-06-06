@@ -101,3 +101,20 @@ def update_problem(problem_id, last_review_date, next_review_date, review_count,
     """, (last_review_date, next_review_date, review_count, interval_days, ease_factor, confidence_score, problem_id))
     conn.commit()
     conn.close()
+
+def reset_all_problems():
+    """Resets spaced repetition scheduling for all problems in the database."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+    cursor.execute("""
+        UPDATE problems
+        SET last_review_date = NULL,
+            next_review_date = ?,
+            review_count = 0,
+            interval_days = 1,
+            ease_factor = 2.5,
+            confidence_score = 0
+    """, (tomorrow,))
+    conn.commit()
+    conn.close()

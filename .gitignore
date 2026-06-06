@@ -1,0 +1,25 @@
+# SpacedNeetCode Git Ignore Config
+
+# Ignore local databases and user settings
+data/
+
+# Ignore virtual environments
+.venv/
+env/
+venv/
+ENV/
+
+# Ignore Python compiled file caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore local environment variable files
+.env
+.flaskenv
+
+# Ignore operating system generated files
+Thumbs.db
+Desktop.ini
+.DS_Store
