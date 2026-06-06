@@ -1,6 +1,6 @@
 # SpacedNeetCode v1.0 🚀
 
-> Master LeetCode problems using spaced repetition. Solve on LeetCode, sync to GitHub, and let SpacedNeetCode optimize your review schedule.
+> Master NeetCode problems using spaced repetition. NeetCode auto-commits your solutions to GitHub, and SpacedNeetCode optimizes your review schedule for long-term retention.
 
 A local-first, lightweight web application that helps you retain coding patterns long-term through intelligent scheduling.
 
@@ -8,26 +8,31 @@ A local-first, lightweight web application that helps you retain coding patterns
 
 ## What is SpacedNeetCode?
 
-You solve LeetCode problems and commit them to a GitHub repository (e.g., using [NeetCode.io's GitHub Integration](https://neetcode.io)). SpacedNeetCode then:
+**The Problem:** You solve coding problems, feel confident, then forget the patterns weeks later. When you see a similar problem, you're back to square one.
 
-1. **Scans your GitHub repo** for new problem solutions
-2. **Extracts unique problems** and initializes review schedules
-3. **Schedules reviews** using the SM-2 spaced repetition algorithm
-4. **Tracks confidence** for each problem to monitor your progress
+**The Solution:** SpacedNeetCode uses **spaced repetition** (SM-2 algorithm) to review problems at scientifically-optimal intervals, building genuine intuition and pattern recognition.
 
-The goal: **Master coding patterns by reviewing them at the optimal time intervals.**
+### How It Works
+
+1. **Solve on [NeetCode.io](https://neetcode.io)** — Access curated problems with video explanations
+2. **NeetCode auto-commits to GitHub** — Every submission is automatically pushed to your GitHub repo
+3. **SpacedNeetCode scans your repo** — Extracts all solved problems and creates a review schedule
+4. **You review on schedule** — Problems are due for review when your brain is ready to re-learn them
+5. **Rate your attempt** — Your feedback adjusts future review intervals automatically
+
+**Result:** You build deep, lasting coding intuition instead of memorizing and forgetting.
 
 ---
 
 ## ✨ Key Features
 
-- **Auto-Sync Solutions** — Automatically scans your GitHub repository and extracts solved problems
-- **SM-2 Spaced Repetition** — Intelligently schedules reviews based on difficulty (Easy, Medium, Hard)
-- **Confidence Tracking** — Monitor your confidence percentage for each problem
-- **Manual Add Form** — Quickly add problems by name and GitHub URL
+- **Auto-Sync from NeetCode** — Automatically scans your GitHub repo (populated by NeetCode's auto-commit feature) and extracts solved problems
+- **SM-2 Spaced Repetition** — Intelligently schedules reviews based on your difficulty rating (Easy, Medium, Hard)
+- **Confidence Tracking** — Monitor your confidence percentage for each problem over time
+- **Manual Add Form** — Quickly add problems by name and GitHub URL if needed
 - **Due Reviews Queue** — See all problems due for review today, sorted by date
-- **Problem Reset** — Reset individual problems or wipe all progress
-- **Double-Click Launch** — Start the app by clicking `launch.vbs` (no terminal needed!)
+- **Problem Reset** — Reset individual problems or wipe all progress to start fresh
+- **Double-Click Launch** — Start the app instantly by clicking `launch.vbs` (no terminal needed!)
 - **Secure & Local** — All data stored locally; `.gitignore` keeps your database and config private
 
 ---
@@ -48,9 +53,9 @@ The goal: **Master coding patterns by reviewing them at the optimal time interva
 
 - **Python 3.8+** installed on your system
 - **Git** installed
-- A **GitHub repository** with your LeetCode solutions (or use [NeetCode.io's sync](https://neetcode.io))
+- **NeetCode.io GitHub Integration** set up ([see instructions](https://neetcode.io/profile/github))
 
-### Step 1: Clone the Repository
+### Step 1: Clone SpacedNeetCode
 
 ```bash
 git clone https://github.com/ZahinDaiyan/SpacedNeetCode.git
@@ -95,33 +100,36 @@ Double-click the **`run.bat`** file in the project root.
 
 ## 📖 Configuration & Usage
 
-### 1. Configure Your GitHub Repository
+### 1. Configure Your NeetCode GitHub Repository
 
-1. Click **Settings** (top-right header)
-2. Enter your GitHub repository in `owner/repo` format
+1. First, [set up NeetCode's GitHub Integration](https://neetcode.io/profile/github) if you haven't already
+   - This enables auto-commits of your solutions to GitHub
+2. Open SpacedNeetCode and click **Settings** (top-right)
+3. Enter your GitHub repository in `owner/repo` format
    - Example: `ZahinDaiyan/neetcode-submissions`
-3. (Optional) Enter a **GitHub Personal Access Token (PAT)**
+4. (Optional) Enter a **GitHub Personal Access Token (PAT)**
    - Use this if your repo is private or to bypass API rate limits
    - [Create a PAT here](https://github.com/settings/tokens)
-4. Click **Save Settings**
+5. Click **Save Settings**
 
-### 2. Sync Your Solutions
+### 2. Sync Your NeetCode Solutions
 
 1. On the home screen, click **Sync Repository**
-2. SpacedNeetCode scans your GitHub repo and imports new problems
-3. Problems are automatically scheduled for review tomorrow
+2. SpacedNeetCode scans your GitHub repo and imports problems you've solved
+3. Each problem is automatically scheduled for review **tomorrow**
 4. You'll see a success message with the count of new problems added
 
-### 3. Log Your Reviews
+### 3. Review & Build Intuition
 
 1. Problems appear in the **Due Today** queue when they're ready to review
 2. Click a problem to open the review page
-3. Try solving it on LeetCode
+3. **Re-solve it on NeetCode** (or on paper/whiteboard)
 4. Come back and rate your attempt:
-   - **Easy** → Multiplies interval by 2.5 (space it out more)
-   - **Medium** → Multiplies interval by 1.8
-   - **Hard** → Multiplies interval by 0.7 (review sooner)
+   - **Easy** → You got it quickly → Interval multiplied by 2.5 (space it out longer)
+   - **Medium** → You got it with some thought → Interval multiplied by 1.8
+   - **Hard** → You struggled → Interval multiplied by 0.7 (review sooner)
 5. Your next review date is automatically calculated
+6. Repeat! Each review deepens your intuition
 
 ### 4. Reset Progress
 
@@ -139,7 +147,7 @@ Double-click the **`run.bat`** file in the project root.
 |---------|---------------|
 | **Stats** | Total problems, due today count, average confidence |
 | **Due Today** | Problems scheduled for review (sorted by date) |
-| **All Problems** | Complete list of every problem you've added |
+| **All Problems** | Complete list of every problem you've synced |
 
 ---
 
@@ -160,6 +168,7 @@ Double-click the **`run.bat`** file in the project root.
 
 **Check:**
 - Your GitHub repo name is correct (`owner/repo` format)
+- Your repo was created by NeetCode's GitHub Integration (contains solved problems)
 - If private, you've provided a valid GitHub PAT with repo access
 - Your internet connection is active
 
@@ -196,6 +205,23 @@ SpacedNeetCode/
 
 ---
 
+## 🧠 How Spaced Repetition Works
+
+SpacedNeetCode uses the **SM-2 algorithm**, the same technique used by medical students, language learners, and other high-achievers:
+
+1. **First review** → After 1 day
+2. **If you rate Easy** → Next review in 2-3 weeks
+3. **If you rate Hard** → Next review in a few days
+4. **Pattern:** Each successful review spaces out the next one further
+
+**Why this works:**
+- You review problems **before you forget them** (not after)
+- Each review strengthens the memory and deepens pattern recognition
+- You spend more time on hard problems and less on easy ones
+- Over time, you build genuine **coding intuition** instead of shallow memorization
+
+---
+
 ## 🔐 Privacy & Security
 
 - **All data is stored locally** in `data/` folder (git-ignored)
@@ -221,11 +247,12 @@ If you encounter issues:
 
 Planned features for future releases:
 - [ ] Dark mode toggle
-- [ ] Difficulty filtering (show only Hard problems)
-- [ ] Problem tagging (Arrays, Trees, DP, etc.)
+- [ ] Difficulty filtering (show only Hard/Medium problems)
+- [ ] Problem tagging by topic (Arrays, Trees, DP, etc.)
 - [ ] Export progress as CSV
 - [ ] Cloud sync (optional)
 - [ ] Mobile companion app
+- [ ] Custom spaced repetition settings
 
 ---
 
@@ -237,11 +264,15 @@ This project is open source. Feel free to fork, modify, and use it!
 
 ## 💡 Pro Tips
 
-- **Sync regularly** (daily) to keep your problem list fresh
-- **Rate honestly** — The SM-2 algorithm works best with accurate difficulty ratings
-- **Use a consistent schedule** — Review your due problems every morning or evening
-- **Reset if overwhelmed** — If you have too many due problems, consider resetting some harder ones
+- **Sync regularly** (daily/weekly) to keep your problem list fresh as you solve on NeetCode
+- **Rate honestly** — The SM-2 algorithm works best with accurate difficulty ratings; don't shortcut this
+- **Review consistently** — Set a time each day to review your due problems (morning or evening)
+- **Watch NeetCode videos** — Before your review, rewatch the problem's video explanation if needed
+- **Use the confidence score** — Problems where your confidence drops should get extra attention
+- **Reset if overwhelmed** — If you have too many due problems, reset some harder ones to spread out the load
 
 ---
 
-**Happy coding! 🎉**
+**Happy coding and learning! 🎉**
+
+Build the patterns. Master the problems. Retain forever.
