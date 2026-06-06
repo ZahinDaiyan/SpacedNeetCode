@@ -173,6 +173,33 @@ def reset_all():
     flash("Review progress for ALL problems has been reset.")
     return redirect(url_for("index"))
 
+@app.route("/shutdown", methods=["POST"])
+def shutdown():
+    # Schedule process shutdown after 1 second to allow response rendering
+    Timer(1.0, lambda: os._exit(0)).start()
+    return """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Server Shut Down - SpacedNeetCode</title>
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+    <body>
+        <div class="container" style="max-width: 500px; padding-top: 5rem; text-align: center;">
+            <div class="review-card" style="border-color: var(--color-easy);">
+                <h2 style="color: var(--color-easy); margin-bottom: 1rem;">Server Shut Down</h2>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">
+                    SpacedNeetCode has shut down successfully. The background pythonw process has been terminated.
+                </p>
+                <p style="font-weight: 600;">You can now safely close this browser tab.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
 if __name__ == "__main__":
     # Auto-open browser on launch (checks WERKZEUG_RUN_MAIN to run only once in debug mode)
     if not os.environ.get("WERKZEUG_RUN_MAIN"):

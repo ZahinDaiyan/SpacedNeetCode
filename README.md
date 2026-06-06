@@ -13,7 +13,9 @@ You solve LeetCode problems, commit your solutions to a GitHub repository, and S
 * **Confidence Scoring**: Shows a rough confidence percentage tracker for each problem.
 * **Manual Add Form**: Fallback option to quickly add problems by name and URL.
 * **Due Reviews Queue**: Sorts and lists what problems are due for review today.
-* **High-Contrast Dark Theme**: Simple, readable dark dashboard.
+* **Reset Functions**: Reset scheduling progress for an individual problem, or wipe progress globally for all problems.
+* **Double-Click Launching**: Starts the local server and automatically opens your web browser.
+* **Git Ignored Data**: Keep your personal databases and configuration secrets safe from public repository commits.
 
 ---
 
@@ -32,30 +34,21 @@ git clone https://github.com/ZahinDaiyan/SpacedNeetCode.git
 cd SpacedNeetCode
 ```
 
-### 2. Set Up Virtual Environment (Recommended)
+### 2. Set Up Your Environment
+Create a virtual environment named `.venv` and install the required packages:
 ```bash
 python -m venv .venv
-```
-* **Windows (PowerShell)**:
-  ```powershell
-  .venv\Scripts\Activate.ps1
-  ```
-* **macOS/Linux**:
-  ```bash
-  source .venv/bin/activate
-  ```
-
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
+.venv\Scripts\pip install -r requirements.txt
 ```
 
-### 4. Start the Application
-```bash
-python app.py
-```
-
-Open your browser and navigate to: **[http://127.0.0.1:5000](http://127.0.0.1:5000)**
+### 3. Run the App 🚀
+* **Invisible Background Mode (Recommended)**: Double-click the **`launch.vbs`** script at the root folder of the project.
+  This launches the Flask application invisibly in the background and automatically opens your browser to **[http://127.0.0.1:5000](http://127.0.0.1:5000)**.
+  
+  To shut down the app safely in this mode, go to **Settings** on the top right of the dashboard page and click the **Shutdown Application** button.
+  
+* **Interactive Terminal Mode**: Double-click the **`run.bat`** batch script at the root folder.
+  This runs the application inside a visible command prompt terminal where you can see execution logs. Close the terminal window or press `Ctrl+C` to terminate the application.
 
 ---
 
@@ -75,3 +68,6 @@ Open your browser and navigate to: **[http://127.0.0.1:5000](http://127.0.0.1:50
      * **Easy**: Multiplies interval by `2.5` and raises ease factor.
      * **Medium**: Multiplies interval by `1.8`.
      * **Hard**: Multiplies interval by `0.7` and drops ease factor (schedules it again sooner).
+4. **Reset Progress**:
+   * **Individual Problem**: Open the problem details, click the **Reset Progress** button at the bottom of the card, and confirm.
+   * **Global Reset**: Open the **Settings** page, click the **Reset All Review Progress** button, and confirm.

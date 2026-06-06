@@ -57,6 +57,30 @@
                 </div>
             </form>
         </div>
+
+        <!-- Danger Zone Card -->
+        <div class="review-card" style="max-width: 500px; margin-top: 1.5rem; border-color: var(--color-hard);">
+            <h2 style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1.5rem; color: var(--color-hard);">
+                Danger Zone
+            </h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                Resetting will clear the spacing reviews, history counts, ease factors, and confidence metrics for all problems. This action cannot be undone.
+            </p>
+            <form action="/settings/reset_all" method="POST" onsubmit="return confirm('WARNING: Are you sure you want to reset the review progress for ALL problems? This cannot be undone.');" style="margin-bottom: 1.5rem;">
+                <button type="submit" class="btn" style="background-color: var(--color-hard); color: white; width: 100%; padding: 0.75rem 1.5rem;">
+                    Reset All Review Progress
+                </button>
+            </form>
+
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                Stop the background Flask application server process safely.
+            </p>
+            <form action="/shutdown" method="POST" onsubmit="return confirm('Are you sure you want to shut down the SpacedNeetCode background server? You will need to launch it again to access the dashboard.');">
+                <button type="submit" class="btn btn-secondary" style="border-color: var(--color-hard); color: var(--color-hard); width: 100%; padding: 0.75rem 1.5rem;">
+                    Shutdown Application
+                </button>
+            </form>
+        </div>
     </div>
 </body>
 </html>
